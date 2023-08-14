@@ -1,0 +1,113 @@
+---
+title: "Predicting Salary using Years of Experience"
+author: "Teresiah Karumba"
+date: "2023-07-26"
+output: html_document
+---
+
+### Loading Data
+
+```{r}
+pacman::p_load(openxlsx, tidyverse, dplyr, corrplot, janitor, utils, lmtest, ggplot2)
+
+setwd <- "C:/Users/teresiah.karumba/Burn Manufacturing/Marketing - Business Intelligence/BI Automations 2020/Teresiah/Coding Challenges/Linear Regression/"
+
+```
+
+### Dataset from Kaggle
+```{r}
+
+salary_df <- read.csv("archive/Salary_dataset.csv") %>% clean_names() %>% 
+  select(years_experience,salary)
+
+```
+
+### Testing for Assumptionsin Linear Regression
+
+### Linearity test
+```{r}
+
+# plot to check the relationship between the years of experience and salary
+plot(salary_df$years_experience, salary_df$salary) # there is some linear rship between salary and years of experience
+
+```
+
+### Test for Normality
+```{r}
+
+# Null hypothesis is the data is normally distributed
+shapiro.test(salary_df$years_experience) 
+
+shapiro.test(salary_df$salary)
+
+# alpha is 0.05, according to shapiro.test only years_experience have a normal distribution since p-value is greater than 0.05
+
+
+# We can add a normality plot for the same
+
+qqnorm(salary_df$years_experience)
+qqline(salary_df$years_experience)
+
+
+```
+
+
+### Test for correlation
+```{r}
+
+cor.test(salary_df$years_experience, salary_df$salary)
+
+cor_matrix <- cor(salary_df)
+corrplot(cor_matrix)
+
+# Using the pearson's correlation coefficient the two variables have a strong positive correlation
+
+```
+
+### Model Building
+```{r}
+
+salary_model <- lm(salary_df$salary ~ salary_df$years_experience)
+summary(salary_model)
+plot(salary_model)
+# Formula Salary = 24,848.2 + 9450*years_experience
+
+# According to the model for every unit change in experience, the salary is expected ti increase by $9450.00
+
+# R2 is the percentage of response variable variation that is explained by its relationship with one or more predictor variables.
+# usually the higher the R2, the better the model fits your data.
+
+# Our model has a p-value less than 0.05 thus our model is statistically significant
+```
+
+# Test for homoscedasticity
+```{r}
+
+# The Breusch-Pagan test is a formal statistical test to assess heteroscedasticity. In this test, the null hypothesis is that the residuals are homoscedastic, and the alternative hypothesis is that they are heteroscedastic.
+
+bptest(salary_model) # p-value > 0.05 thus there is no evidence of heteroscedasticity
+```
+
+### Predict
+```{r}
+
+predicted_salary = 24848.2 + 9450*20
+
+predicted_salary
+
+```
+
+### Model Plot
+```{r}
+
+ggplot(data = salary_df, aes(x = years_experience, y = salary)) +
+  geom_point() +
+  geom_smooth(method='lm')+
+  geom_text(x = 8.5, y = 48000, label = "y = 24848.2 + 9450.0 * years_experience + e")+
+  labs(title = "Linear Regression (Predicting Salary by Years of Experience)") +
+  theme_grey()+
+  theme(plot.title = element_text(family = "Times", face = "bold", size = 19, hjust = 0.5, vjust = 2.5),
+        plot.caption = element_text(family = "Times", size = 11),
+        axis.title = element_text(family = "Times", face = "bold", size = 15))
+
+```

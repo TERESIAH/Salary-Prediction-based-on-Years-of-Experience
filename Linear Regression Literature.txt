@@ -1,0 +1,26 @@
+Linear Regression is a type of supervised learning model in data science. 
+This algorithm predicts rship between two variables and assumes a linear relationship between the independent and the dependent variables.
+It aims at getting the best fitting line that describes the relationship.
+This line is determined at minimizing the sum of squared differences between the predicted and the actual values.(Y-Y^)2
+The best fit line has the minimum error btwn the predicted values and the actual values.
+The model estimates the slope and the intercept of the line of best fit.
+The intercept is the change in the dependent variable for every unit change of the independent variable.
+
+Random Error(Residuals) - the difference between the observed and the predicted values.
+
+Evaluation Metrics for Linear Regression
+1. Coefficient of determination or R2
+R-Squared is a value that explains the amount of variation that is explained by the developed model.
+Ranges from 0-1.
+The higher the R2, the better the model fits the data.
+
+2. Root Mean Squared
+The Root Mean Squared Error is the square root of the variance of the residuals. It specifies the absolute fit of the model to the data i.e. 
+how close the observed data points are to the predicted values.
+
+Assumptions of Linear Regression
+1. Linearity of residuals: There needs to be a relationship between the dependent and independent variables.
+2. Independence of residuals: The error terms should not be dependent on one another.
+There should be no correlation between the residual terms. The absence of this phenomenon is known as Autocorrelation.
+3. Normal distribution of residuals: The mean of residuals should follow a normal distribution with a mean equal to zero or close to zero.
+4. The equal variance of residuals: The error terms must have constant variance. This phenomenon is known as Homoscedasticity.
